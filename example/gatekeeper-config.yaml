@@ -1,0 +1,14 @@
+# sync namespaces and ingresses to gatekeeper
+apiVersion: config.gatekeeper.sh/v1alpha1
+kind: Config
+metadata:
+  name: config
+spec:
+  sync:
+    syncOnly:
+      - group: ""
+        version: "v1"
+        kind: "Namespace"
+      - group: "extensions"
+        version: "v1beta1"
+        kind: "Ingress"
