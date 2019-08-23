@@ -1,41 +1,15 @@
 version: 2.0
 jobs:
   rego:
-    docker:
-      - image: circleci/python:latest
+    machine: true
     steps:
       - checkout
-      - run:
-          name: "Install opa"
-          command: |
-            curl -L -o opa https://github.com/open-policy-agent/opa/releases/download/v0.13.3/opa_linux_amd64
-            chmod 755 opa
-      - run:
-          name: "Install pyyaml"
-          command: pip3 install --user pyyaml
-      - run:
-          name: "Extract rego policies from manifests"
-          command: ./lib/extract_rego.py ./base/templates/*.yaml
-      - run:
-          name: "Run tests"
-          command: ./opa test -v *.rego
+      - run: docker build --target rego .
   kustomize:
-    docker:
-      - image: circleci/golang:latest
+    machine: true
     steps:
       - checkout
-      - run:
-          name: "Install kustomize"
-          command: |
-            curl -L -o kustomize \
-            https://github.com/kubernetes-sigs/kustomize/releases/download/v3.1.0/kustomize_3.1.0_linux_amd64
-            chmod 755 kustomize
-      - run:
-          name: "Build base"
-          command: ./kustomize build base/
-      - run:
-          name: "Build example"
-          command: ./kustomize build example/
+      - run: docker build --target kustomize .
 workflows:
   version: 2
   test:

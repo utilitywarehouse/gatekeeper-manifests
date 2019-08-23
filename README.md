@@ -27,9 +27,17 @@ go get -u sigs.k8s.io/kustomize
 
 ## Testing
 
-Run the circleci jobs locally
+The rego policies and kustomize build can be tested with `make`.
+
+Or the tests can be ran separately:
 
 ```
-$ circleci local execute --job rego
-$ circleci local execute --job kustomize
+$ make rego
+$ make kustomize
+```
+
+You can also install a `pre-push` git hook that will run the tests on push:
+
+```
+$ make install-git-hooks
 ```
