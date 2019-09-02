@@ -339,10 +339,12 @@ spec:
               protocol: TCP
           resources:
             limits:
-              cpu: 100m
-              memory: 512Mi
+              # increased from the relatively low defaults provided by the upstream manifest; 100m cpu caused very slow request
+              # latencies to the api server
+              cpu: 7000m
+              memory: 1000Mi
             requests:
-              cpu: 100m
+              cpu: 200m
               memory: 256Mi
           volumeMounts:
             - mountPath: /certs
