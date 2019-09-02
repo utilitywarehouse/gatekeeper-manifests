@@ -12,7 +12,7 @@ Reference the remote base in your `kustomization.yaml`
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 bases:
-  - github.com/utilitywarehouse/gatekeeper-manifests/base?ref=3.0.4-beta.1-1
+  - github.com/utilitywarehouse/gatekeeper-manifests/base?ref=3.0.4-beta.1-2
 ```
 
 Define the constraints and gatekeeper configuration suitable for your environment. Refer to the `example/`.
