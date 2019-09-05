@@ -1,10 +1,5 @@
 version: 2.0
 jobs:
-  rego:
-    machine: true
-    steps:
-      - checkout
-      - run: docker build --target rego .
   kustomize:
     machine: true
     steps:
@@ -14,5 +9,4 @@ workflows:
   version: 2
   test:
     jobs:
-      - rego
       - kustomize
