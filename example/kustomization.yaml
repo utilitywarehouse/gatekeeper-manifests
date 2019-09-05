@@ -1,9 +1,14 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 bases:
-  - ../base
-#  - github.com/utilitywarehouse/gatekeeper-manifests/base?ref=3.0.4-beta.1-2
+  - ../bases/cluster
+  #  - github.com/utilitywarehouse/gatekeeper-manifests/bases/cluster?ref=3.0.4-beta.1-2
+  - ../bases/namespaced
+  #  - github.com/utilitywarehouse/gatekeeper-manifests/bases/namespaced?ref=3.0.4-beta.1-2
+  - ../bases/templates
+  #  - github.com/utilitywarehouse/gatekeeper-manifests/bases/templates?ref=3.0.4-beta.1-2
 resources:
+  - gatekeeper-cluster-role-binding.yaml
   - gatekeeper-config.yaml
   - ingress-host-restriction.yaml
   - namespace-name-label-match.yaml
