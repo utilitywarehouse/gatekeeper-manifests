@@ -2,15 +2,14 @@
 
 [![CircleCI](https://circleci.com/gh/utilitywarehouse/gatekeeper-manifests/tree/master.svg?style=svg)](https://circleci.com/gh/utilitywarehouse/gatekeeper-manifests/tree/master)
 
-This repository provides Kustomize bases to deploy Open Policy Agent gatekeeper and a set of generic constraint templates.
+This repository provides Kustomize bases to deploy Open Policy Agent gatekeeper.
 
 ## Usage
 
-The resources are divided into three bases:
+The resources are divided into two bases:
 
-- `bases/cluster` - cluster scoped resources
-- `bases/namespaced` - namespaced resources
-- `bases/templates` - the library of `ConstraintTemplates`
+- `cluster` - cluster scoped resources
+- `namespaced` - namespaced resources
 
 Reference them in your `kustomization.yaml`, like so:
 
@@ -18,12 +17,11 @@ Reference them in your `kustomization.yaml`, like so:
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 bases:
-  - github.com/utilitywarehouse/gatekeeper-manifests/bases/cluster?ref=3.0.4-beta.1-2
-  - github.com/utilitywarehouse/gatekeeper-manifests/bases/namespaced?ref=3.0.4-beta.1-2
-  - github.com/utilitywarehouse/gatekeeper-manifests/bases/templates?ref=3.0.4-beta.1-2
+  - github.com/utilitywarehouse/gatekeeper-manifests/cluster?ref=3.0.4-beta.1-2
+  - github.com/utilitywarehouse/gatekeeper-manifests/namespaced?ref=3.0.4-beta.1-2
 ```
 
-Define the constraints and gatekeeper configuration suitable for your environment.
+Define the gatekeeper configuration suitable for your environment.
 
 Refer to the `example/`.
 
@@ -40,17 +38,14 @@ go get -u sigs.k8s.io/kustomize
 
 ## Testing
 
-The rego policies and kustomize build can be tested with `make`.
-
-Or the tests can be ran separately:
-
-```
-$ make rego
-$ make kustomize
-```
+The kustomize build can be tested with `make`.
 
 You can also install a `pre-push` git hook that will run the tests on push:
 
 ```
 $ make install-git-hooks
 ```
+
+## Templates
+
+Our library of `ConstraintTemplates` can also be pulled in as a base. See [gatekeeper-template-manifests](https://github.com/utilitywarehouse/gatekeeper-template-manifests).
