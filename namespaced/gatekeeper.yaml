@@ -1,46 +1,54 @@
-apiVersion: v1
-kind: Secret
+apiVersion: certmanager.k8s.io/v1alpha1
+kind: Issuer
 metadata:
-  name: gatekeeper-webhook-server-secret
+  name: gatekeeper-selfsigned-issuer
+spec:
+  selfSigned: {}
+---
+apiVersion: certmanager.k8s.io/v1alpha1
+kind: Certificate
+metadata:
+  name: gatekeeper-serving-cert
+spec:
+  issuerRef:
+    kind: Issuer
+    name: gatekeeper-selfsigned-issuer
+  secretName: gatekeeper-webhook-server-cert
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  labels:
-    control-plane: controller-manager
-    controller-tools.k8s.io: "1.0"
-  name: gatekeeper-controller-manager-service
+  name: gatekeeper-webhook-service
 spec:
   ports:
     - port: 443
       targetPort: 8443
   selector:
     control-plane: controller-manager
-    controller-tools.k8s.io: "1.0"
 ---
 apiVersion: apps/v1
-kind: StatefulSet
+kind: Deployment
 metadata:
   labels:
     control-plane: controller-manager
-    controller-tools.k8s.io: "1.0"
   name: gatekeeper-controller-manager
 spec:
+  replicas: 1
   selector:
     matchLabels:
       control-plane: controller-manager
-      controller-tools.k8s.io: "1.0"
-  serviceName: gatekeeper-controller-manager-service
   template:
     metadata:
       labels:
         control-plane: controller-manager
-        controller-tools.k8s.io: "1.0"
     spec:
       containers:
         - args:
-            - --auditInterval=30
-            - --port=8443
+            - -auditInterval=30
+            - -port=8443
+            - -disable-cert-rotation
+          command:
+            - /manager
           env:
             - name: POD_NAMESPACE
               valueFrom:
@@ -51,9 +59,7 @@ spec:
               valueFrom:
                 fieldRef:
                   fieldPath: metadata.name
-            - name: SECRET_NAME
-              value: gatekeeper-webhook-server-secret
-          image: quay.io/open-policy-agent/gatekeeper:v3.0.4-beta.2
+          image: quay.io/open-policy-agent/gatekeeper:v3.1.0-beta.0
           imagePullPolicy: Always
           name: manager
           ports:
@@ -78,4 +84,4 @@ spec:
         - name: cert
           secret:
             defaultMode: 420
-            secretName: gatekeeper-webhook-server-secret
+            secretName: gatekeeper-webhook-server-cert

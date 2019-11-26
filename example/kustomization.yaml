@@ -5,6 +5,8 @@ bases:
   #  - github.com/utilitywarehouse/gatekeeper-manifests/cluster?ref=3.0.4-beta.2-1
   - ../namespaced
   #  - github.com/utilitywarehouse/gatekeeper-manifests/namespaced?ref=3.0.4-beta.2-1
+patchesStrategicMerge:
+  - gatekeeper-patch.yaml
 resources:
-  - gatekeeper-cluster-role-binding.yaml
-  - gatekeeper-config.yaml
+  - gatekeeper.yaml
+  - rbac.yaml
