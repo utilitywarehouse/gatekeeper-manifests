@@ -17,8 +17,8 @@ Reference them in your `kustomization.yaml`, like so:
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 bases:
-  - github.com/utilitywarehouse/gatekeeper-manifests/cluster?ref=3.0.4-beta.2-1
-  - github.com/utilitywarehouse/gatekeeper-manifests/namespaced?ref=3.0.4-beta.2-1
+  - github.com/utilitywarehouse/gatekeeper-manifests/cluster?ref=3.1.0-beta.0-1
+  - github.com/utilitywarehouse/gatekeeper-manifests/namespaced?ref=3.1.0-beta.0-1
 ```
 
 Define the gatekeeper configuration suitable for your environment.
@@ -26,7 +26,7 @@ Define the gatekeeper configuration suitable for your environment.
 Refer to the `example/`.
 
 Note that you need to [provide the `ClusterRoleBinding` for gatekeeper's service
-account](example/gatekeeper-cluster-role-binding.yaml). This is required in order to keep the base namespace-agnostic.
+account](example/rbac.yaml). This is required in order to keep the base namespace-agnostic.
 
 ## Requires
 
