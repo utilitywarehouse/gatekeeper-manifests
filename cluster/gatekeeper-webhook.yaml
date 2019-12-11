@@ -5,7 +5,6 @@ metadata:
 webhooks:
   - name: validation.gatekeeper.sh
     clientConfig:
-      caBundle: Cg==
       service:
         name: gatekeeper-webhook-service
         path: /v1/admit
