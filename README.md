@@ -26,7 +26,7 @@ Define the gatekeeper configuration suitable for your environment.
 Refer to the `example/`.
 
 Note that you need to [provide the `ClusterRoleBinding` for gatekeeper's service
-account](example/gatekeeper-cluster-role-binding.yaml). This is required in order to keep the base namespace-agnostic.
+account](example/rbac.yaml). This is required in order to keep the base namespace-agnostic.
 
 ## Requires
 
