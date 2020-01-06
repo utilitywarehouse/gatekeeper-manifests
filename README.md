@@ -28,6 +28,8 @@ Refer to the `example/`.
 Note that you need to [provide the `ClusterRoleBinding` for gatekeeper's service
 account](example/rbac.yaml). This is required in order to keep the base namespace-agnostic.
 
+The `namespaced` base sets the `--disable-cert-rotation` flag, which means you must manage the webhook certificate, in a secret called `gatekeeper-webhook-server-cert`, separately. Additionally, the CA certificate must be injected into the `ValidatingWebhookConfiguration`. The example uses cert-manager and cert-manager's cainjector to achieve both things.
+
 ## Requires
 
 - https://github.com/kubernetes-sigs/kustomize
