@@ -4,10 +4,12 @@ COPY ./cluster cluster
 COPY ./namespaced namespaced
 COPY ./example example
 
-RUN wget -O kustomize \
-    https://github.com/kubernetes-sigs/kustomize/releases/download/v3.1.0/kustomize_3.1.0_linux_amd64
-RUN chmod 755 kustomize
+ENV KUSTOMIZE_VERSION="v3.5.4"
 
-RUN ./kustomize build cluster
-RUN ./kustomize build namespaced
-RUN ./kustomize build example
+RUN \
+    wget -O - https://github.com/kubernetes-sigs/kustomize/releases/download/kustomize%2F${KUSTOMIZE_VERSION}/kustomize_${KUSTOMIZE_VERSION}_linux_amd64.tar.gz |\
+    tar xz -C /usr/local/bin/
+
+RUN kustomize build cluster
+RUN kustomize build namespaced
+RUN kustomize build example
