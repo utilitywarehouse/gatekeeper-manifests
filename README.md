@@ -17,8 +17,8 @@ Reference them in your `kustomization.yaml`, like so:
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 bases:
-  - github.com/utilitywarehouse/gatekeeper-manifests/cluster?ref=3.1.0-beta.2-2
-  - github.com/utilitywarehouse/gatekeeper-manifests/namespaced?ref=3.1.0-beta.2-2
+  - github.com/utilitywarehouse/gatekeeper-manifests/cluster?ref=3.1.0-beta.5-1
+  - github.com/utilitywarehouse/gatekeeper-manifests/namespaced?ref=3.1.0-beta.5-1
 ```
 
 Define the gatekeeper configuration suitable for your environment.
@@ -27,8 +27,6 @@ Refer to the `example/`.
 
 Note that you need to [provide the `ClusterRoleBinding` for gatekeeper's service
 account](example/rbac.yaml). This is required in order to keep the base namespace-agnostic.
-
-The `namespaced` base sets the `--disable-cert-rotation` flag, which means you must manage the webhook certificate, in a secret called `gatekeeper-webhook-server-cert`, separately. Additionally, the CA certificate must be injected into the `ValidatingWebhookConfiguration`. The example uses cert-manager and cert-manager's cainjector to achieve both things.
 
 ## Requires
 
