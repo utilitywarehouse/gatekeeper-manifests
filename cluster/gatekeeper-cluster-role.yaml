@@ -92,3 +92,9 @@ rules:
       - patch
       - update
       - watch
+  # added by us to allow the gatekeeper pod to use runtime/default seccomp
+  - apiGroups: ["policy"]
+    resources: ["podsecuritypolicies"]
+    verbs: ["use"]
+    resourceNames:
+      - gatekeeper
