@@ -3,4 +3,5 @@ kind: Kustomization
 resources:
   - gatekeeper-cluster-role.yaml
   - gatekeeper-crds.yaml
+  - gatekeeper-psp.yaml
   - gatekeeper-webhook.yaml

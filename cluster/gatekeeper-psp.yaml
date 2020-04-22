@@ -1,0 +1,19 @@
+# added by us to allow the gatekeeper pod to use runtime/default seccomp
+apiVersion: policy/v1beta1
+kind: PodSecurityPolicy
+metadata:
+  name: gatekeeper
+  annotations:
+    seccomp.security.alpha.kubernetes.io/defaultProfileName: runtime/default
+    seccomp.security.alpha.kubernetes.io/allowedProfileNames: runtime/default
+spec:
+  volumes:
+    - "secret"
+  seLinux:
+    rule: RunAsAny
+  supplementalGroups:
+    rule: RunAsAny
+  runAsUser:
+    rule: RunAsAny
+  fsGroup:
+    rule: RunAsAny

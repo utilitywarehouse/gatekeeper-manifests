@@ -39,7 +39,6 @@ spec:
       containers:
         - name: manager
           args:
-            - --audit-interval=30
             - --port=8443
             - --logtostderr
             - --disable-cert-rotation
