@@ -45,3 +45,4 @@ spec:
             # Placeholder, patch with the gatekeeper namespace value and any
             # other namespaces you want to exclude from the webhook
             - --exempt-namespace=example-namespace
+            - --operation=webhook
