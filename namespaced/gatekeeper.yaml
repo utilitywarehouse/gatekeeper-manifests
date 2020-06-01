@@ -55,6 +55,8 @@ spec:
         - args:
             - --port=8443
             - --logtostderr
+            - --disable-cert-rotation
+            - --exempt-namespace=$(POD_NAMESPACE)
             - --operation=webhook
           command:
             - /manager
