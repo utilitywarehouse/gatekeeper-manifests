@@ -28,20 +28,3 @@ webhooks:
       service:
         # Placeholder, patch with the gatekeeper namespace value
         namespace: example-namespace
----
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: gatekeeper-controller-manager
-spec:
-  template:
-    spec:
-      containers:
-        - name: manager
-          args:
-            - --port=8443
-            - --logtostderr
-            - --disable-cert-rotation
-            # Placeholder, patch with the gatekeeper namespace value and any
-            # other namespaces you want to exclude from the webhook
-            - --exempt-namespace=example-namespace
