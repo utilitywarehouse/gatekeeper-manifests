@@ -4,7 +4,7 @@ COPY ./cluster cluster
 COPY ./namespaced namespaced
 COPY ./example example
 
-ENV KUSTOMIZE_VERSION="v3.5.4"
+ENV KUSTOMIZE_VERSION="v3.6.1"
 
 RUN \
     wget -O - https://github.com/kubernetes-sigs/kustomize/releases/download/kustomize%2F${KUSTOMIZE_VERSION}/kustomize_${KUSTOMIZE_VERSION}_linux_amd64.tar.gz |\

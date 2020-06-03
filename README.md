@@ -17,8 +17,8 @@ Reference them in your `kustomization.yaml`, like so:
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 bases:
-  - github.com/utilitywarehouse/gatekeeper-manifests/cluster?ref=3.1.0-beta.9-1
-  - github.com/utilitywarehouse/gatekeeper-manifests/namespaced?ref=3.1.0-beta.9-1
+  - github.com/utilitywarehouse/gatekeeper-manifests/cluster?ref=3.1.0-beta.9-2
+  - github.com/utilitywarehouse/gatekeeper-manifests/namespaced?ref=3.1.0-beta.9-2
 ```
 
 Define the gatekeeper configuration suitable for your environment.
