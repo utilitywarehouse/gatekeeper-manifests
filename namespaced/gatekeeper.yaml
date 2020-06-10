@@ -151,6 +151,7 @@ spec:
         - args:
             - --operation=audit
             - --logtostderr
+            - --audit-from-cache=true
           command:
             - /manager
           env:
