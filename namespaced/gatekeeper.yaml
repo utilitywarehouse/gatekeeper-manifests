@@ -97,7 +97,7 @@ spec:
             # throttling which caused very slow request latencies to the api server
             limits:
               cpu: 7000m
-              memory: 1000Mi
+              memory: 4000Mi
             requests:
               cpu: 200m
               memory: 256Mi
@@ -185,8 +185,8 @@ spec:
           resources:
             # increased from the relatively low defaults provided by the upstream manifest
             limits:
-              cpu: 2000m
-              memory: 1000Mi
+              cpu: 7000m
+              memory: 4000Mi
             requests:
               cpu: 200m
               memory: 256Mi
