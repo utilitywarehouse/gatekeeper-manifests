@@ -28,6 +28,24 @@ Refer to the `example/`.
 Note that you need to [provide the `ClusterRoleBinding` for gatekeeper's service
 account](example/rbac.yaml). This is required in order to keep the base namespace-agnostic.
 
+## Update
+
+```
+helm repo add gatekeeper https://raw.githubusercontent.com/open-policy-agent/gatekeeper/master/charts/gatekeeper
+helm repo update
+helm fetch gatekeeper/gatekeeper --devel
+helm template --name gatekeeper gatekeeper-v3.1.0-beta.12.tgz
+```
+
+Then:
+
+- Split cluster and namespace scoped resources into `cluster/gatekeeper.yaml` and
+  `namespaced/gatekeeper.yaml`, respectively.
+- Remove `Namespace`, `ClusterRoleBinding` and `RoleBinding` resources
+- Remove the `metadata.namespace` field from all the namespaced resources
+- Update any patches in `{cluster,namespaced}/gatekeeper-patch.yaml` to account
+  for upstream changes
+
 ## Requires
 
 - https://github.com/kubernetes-sigs/kustomize
