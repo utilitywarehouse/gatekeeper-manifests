@@ -7,6 +7,8 @@ spec:
     spec:
       containers:
         - name: auditcontainer
+          image: registry.exp-1.aws.uw.systems/rob.best/gatekeeper:latest
+          imagePullPolicy: Always
           resources:
             limits:
               cpu: 7000m
@@ -23,6 +25,8 @@ spec:
     spec:
       containers:
         - name: manager
+          image: registry.exp-1.aws.uw.systems/rob.best/gatekeeper:latest
+          imagePullPolicy: Always
           args:
             - --port=8443
             - --logtostderr
