@@ -2,9 +2,9 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 bases:
   - ../cluster
-  #  - github.com/utilitywarehouse/gatekeeper-manifests/cluster?ref=3.1.0-beta.9-4
+  #  - github.com/utilitywarehouse/gatekeeper-manifests/cluster?ref=3.1.0-beta.12
   - ../namespaced
-  #  - github.com/utilitywarehouse/gatekeeper-manifests/namespaced?ref=3.1.0-beta.9-4
+  #  - github.com/utilitywarehouse/gatekeeper-manifests/namespaced?ref=3.1.0-beta.12
 commonLabels:
   gatekeeper.sh/system: "yes"
 patchesStrategicMerge:
