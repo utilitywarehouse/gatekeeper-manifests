@@ -31,10 +31,10 @@ account](example/rbac.yaml). This is required in order to keep the base namespac
 ## Update
 
 ```
-helm repo add gatekeeper https://raw.githubusercontent.com/open-policy-agent/gatekeeper/master/charts/gatekeeper
+helm repo add gatekeeper https://open-policy-agent.github.io/gatekeeper/charts
 helm repo update
-helm fetch gatekeeper/gatekeeper --devel
-helm template --name gatekeeper gatekeeper-v3.1.0-beta.12.tgz
+helm fetch gatekeeper/gatekeeper
+helm template --name gatekeeper gatekeeper-3.1.1.tgz
 ```
 
 Then:
