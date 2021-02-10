@@ -2,6 +2,7 @@
 apiVersion: v1
 kind: Secret
 metadata:
+  annotations: {}
   labels:
     app: "gatekeeper"
     chart: "gatekeeper"
@@ -86,7 +87,7 @@ metadata:
   labels:
     app: "gatekeeper"
     chart: "gatekeeper"
-    control-plane: controller-manager
+    control-plane: audit-controller
     gatekeeper.sh/operation: audit
     gatekeeper.sh/system: "yes"
     heritage: "Tiller"
@@ -116,6 +117,7 @@ spec:
         heritage: "Tiller"
         release: "gatekeeper"
     spec:
+      automountServiceAccountToken: true
       containers:
         - args:
             - --audit-interval=60
@@ -139,7 +141,7 @@ spec:
               valueFrom:
                 fieldRef:
                   fieldPath: metadata.name
-          image: "openpolicyagent/gatekeeper:v3.2.1"
+          image: "openpolicyagent/gatekeeper:v3.3.0"
           imagePullPolicy: "IfNotPresent"
           livenessProbe:
             httpGet:
@@ -164,18 +166,26 @@ spec:
             requests:
               cpu: 100m
               memory: 256Mi
+
           securityContext:
             allowPrivilegeEscalation: false
             capabilities:
               drop:
                 - all
+            readOnlyRootFilesystem: true
             runAsGroup: 999
             runAsNonRoot: true
             runAsUser: 1000
       nodeSelector:
         kubernetes.io/os: linux
+
       affinity: {}
+
       tolerations: []
+
+      imagePullSecrets: []
+
+      priorityClassName: system-cluster-critical
       serviceAccountName: gatekeeper-admin
       terminationGracePeriodSeconds: 60
 ---
@@ -228,6 +238,7 @@ spec:
                         - webhook
                 topologyKey: kubernetes.io/hostname
               weight: 100
+      automountServiceAccountToken: true
       containers:
         - args:
             - --port=8443
@@ -248,7 +259,7 @@ spec:
               valueFrom:
                 fieldRef:
                   fieldPath: metadata.name
-          image: "openpolicyagent/gatekeeper:v3.2.1"
+          image: "openpolicyagent/gatekeeper:v3.3.0"
           imagePullPolicy: "IfNotPresent"
           livenessProbe:
             httpGet:
@@ -276,11 +287,13 @@ spec:
             requests:
               cpu: 100m
               memory: 256Mi
+
           securityContext:
             allowPrivilegeEscalation: false
             capabilities:
               drop:
                 - all
+            readOnlyRootFilesystem: true
             runAsGroup: 999
             runAsNonRoot: true
             runAsUser: 1000
@@ -290,7 +303,12 @@ spec:
               readOnly: true
       nodeSelector:
         kubernetes.io/os: linux
+
       tolerations: []
+
+      imagePullSecrets: []
+
+      priorityClassName: system-cluster-critical
       serviceAccountName: gatekeeper-admin
       terminationGracePeriodSeconds: 60
       volumes:
