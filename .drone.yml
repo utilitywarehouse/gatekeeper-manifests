@@ -1,0 +1,15 @@
+kind: pipeline
+type: kubernetes
+name: default
+
+steps:
+  - name: docker-test
+    image: plugins/docker
+    settings:
+      dry_run: true
+      repo: test
+
+trigger:
+  event:
+    exclude:
+      - pull_request
