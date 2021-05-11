@@ -17,8 +17,8 @@ Reference them in your `kustomization.yaml`, like so:
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 bases:
-  - github.com/utilitywarehouse/gatekeeper-manifests/cluster?ref=3.3.0-1
-  - github.com/utilitywarehouse/gatekeeper-manifests/namespaced?ref=3.3.0-1
+  - github.com/utilitywarehouse/gatekeeper-manifests/cluster
+  - github.com/utilitywarehouse/gatekeeper-manifests/namespaced
 ```
 
 Define the gatekeeper configuration suitable for your environment.
@@ -30,21 +30,22 @@ account](example/rbac.yaml). This is required in order to keep the base namespac
 
 ## Update
 
+To update the upstream version, edit `HELM_VERSION` in the
+[`Makefile`](Makefile) and run:
+
 ```
-helm repo add gatekeeper https://open-policy-agent.github.io/gatekeeper/charts
-helm repo update
-helm fetch gatekeeper/gatekeeper
-helm template --name gatekeeper gatekeeper-3.1.1.tgz
+make helm
 ```
 
-Then:
+Note: requires `helm` v3 and `yq` v3.
 
-- Split cluster and namespace scoped resources into `cluster/gatekeeper.yaml` and
-  `namespaced/gatekeeper.yaml`, respectively.
-- Remove `Namespace`, `ClusterRoleBinding` and `RoleBinding` resources
-- Remove the `metadata.namespace` field from all the namespaced resources
-- Update any patches in `{cluster,namespaced}/gatekeeper-patch.yaml` to account
-  for upstream changes
+This will update the files:
+- [`cluster/gatekeeper.yaml`](cluster/gatekeeper.yaml)
+- [`namespaced/gatekeeper.yaml`](namespaced/gatekeeper.yaml)
+
+Patch changes on top of the upstream in the patches:
+- [`cluster/gatekeeper-patch.yaml`](cluster/gatekeeper-patch.yaml)
+- [`namespaced/gatekeeper-patch.yaml`](namespaced/gatekeeper-patch.yaml)
 
 ## Requires
 

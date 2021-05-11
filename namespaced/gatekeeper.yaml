@@ -1,27 +1,50 @@
-# Source: gatekeeper/templates/gatekeeper-webhook-server-cert-secret.yaml
-apiVersion: v1
-kind: Secret
+# Source: gatekeeper/templates/gatekeeper-controller-manager-poddisruptionbudget.yaml
+apiVersion: policy/v1beta1
+kind: PodDisruptionBudget
 metadata:
-  annotations: {}
   labels:
-    app: "gatekeeper"
-    chart: "gatekeeper"
+    app: 'gatekeeper'
+    chart: 'gatekeeper'
     gatekeeper.sh/system: "yes"
-    heritage: "Tiller"
-    release: "gatekeeper"
-  name: gatekeeper-webhook-server-cert
+    heritage: 'Helm'
+    release: 'gatekeeper'
+  name: gatekeeper-controller-manager
+spec:
+  minAvailable: 1
+  selector:
+    matchLabels:
+      app: 'gatekeeper'
+      chart: 'gatekeeper'
+      control-plane: controller-manager
+      gatekeeper.sh/operation: webhook
+      gatekeeper.sh/system: "yes"
+      heritage: 'Helm'
+      release: 'gatekeeper'
 ---
 # Source: gatekeeper/templates/gatekeeper-admin-serviceaccount.yaml
 apiVersion: v1
 kind: ServiceAccount
 metadata:
   labels:
-    app: "gatekeeper"
-    chart: "gatekeeper"
+    app: 'gatekeeper'
+    chart: 'gatekeeper'
     gatekeeper.sh/system: "yes"
-    heritage: "Tiller"
-    release: "gatekeeper"
+    heritage: 'Helm'
+    release: 'gatekeeper'
   name: gatekeeper-admin
+---
+# Source: gatekeeper/templates/gatekeeper-webhook-server-cert-secret.yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  annotations: {}
+  labels:
+    app: 'gatekeeper'
+    chart: 'gatekeeper'
+    gatekeeper.sh/system: "yes"
+    heritage: 'Helm'
+    release: 'gatekeeper'
+  name: gatekeeper-webhook-server-cert
 ---
 # Source: gatekeeper/templates/gatekeeper-manager-role-role.yaml
 apiVersion: rbac.authorization.k8s.io/v1
@@ -29,11 +52,11 @@ kind: Role
 metadata:
   creationTimestamp: null
   labels:
-    app: "gatekeeper"
-    chart: "gatekeeper"
+    app: 'gatekeeper'
+    chart: 'gatekeeper'
     gatekeeper.sh/system: "yes"
-    heritage: "Tiller"
-    release: "gatekeeper"
+    heritage: 'Helm'
+    release: 'gatekeeper'
   name: gatekeeper-manager-role
 rules:
   - apiGroups:
@@ -61,62 +84,63 @@ apiVersion: v1
 kind: Service
 metadata:
   labels:
-    app: "gatekeeper"
-    chart: "gatekeeper"
+    app: 'gatekeeper'
+    chart: 'gatekeeper'
     gatekeeper.sh/system: "yes"
-    heritage: "Tiller"
-    release: "gatekeeper"
+    heritage: 'Helm'
+    release: 'gatekeeper'
   name: gatekeeper-webhook-service
 spec:
   ports:
     - port: 443
       targetPort: 8443
   selector:
-    app: "gatekeeper"
-    chart: "gatekeeper"
+    app: 'gatekeeper'
+    chart: 'gatekeeper'
     control-plane: controller-manager
     gatekeeper.sh/operation: webhook
     gatekeeper.sh/system: "yes"
-    heritage: "Tiller"
-    release: "gatekeeper"
+    heritage: 'Helm'
+    release: 'gatekeeper'
 ---
 # Source: gatekeeper/templates/gatekeeper-audit-deployment.yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app: "gatekeeper"
-    chart: "gatekeeper"
+    app: 'gatekeeper'
+    chart: 'gatekeeper'
     control-plane: audit-controller
     gatekeeper.sh/operation: audit
     gatekeeper.sh/system: "yes"
-    heritage: "Tiller"
-    release: "gatekeeper"
+    heritage: 'Helm'
+    release: 'gatekeeper'
   name: gatekeeper-audit
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: "gatekeeper"
-      chart: "gatekeeper"
+      app: 'gatekeeper'
+      chart: 'gatekeeper'
       control-plane: audit-controller
       gatekeeper.sh/operation: audit
       gatekeeper.sh/system: "yes"
-      heritage: "Tiller"
-      release: "gatekeeper"
+      heritage: 'Helm'
+      release: 'gatekeeper'
   template:
     metadata:
       annotations:
         container.seccomp.security.alpha.kubernetes.io/manager: runtime/default
       labels:
-        app: "gatekeeper"
-        chart: "gatekeeper"
+        app: 'gatekeeper'
+        chart: 'gatekeeper'
         control-plane: audit-controller
         gatekeeper.sh/operation: audit
         gatekeeper.sh/system: "yes"
-        heritage: "Tiller"
-        release: "gatekeeper"
+        heritage: 'Helm'
+        release: 'gatekeeper'
     spec:
+      affinity: {}
       automountServiceAccountToken: true
       containers:
         - args:
@@ -141,8 +165,8 @@ spec:
               valueFrom:
                 fieldRef:
                   fieldPath: metadata.name
-          image: "openpolicyagent/gatekeeper:v3.3.0"
-          imagePullPolicy: "IfNotPresent"
+          image: 'openpolicyagent/gatekeeper:v3.4.0'
+          imagePullPolicy: 'IfNotPresent'
           livenessProbe:
             httpGet:
               path: /healthz
@@ -166,7 +190,6 @@ spec:
             requests:
               cpu: 100m
               memory: 256Mi
-
           securityContext:
             allowPrivilegeEscalation: false
             capabilities:
@@ -176,55 +199,50 @@ spec:
             runAsGroup: 999
             runAsNonRoot: true
             runAsUser: 1000
+      hostNetwork: false
+      imagePullSecrets: []
       nodeSelector:
         kubernetes.io/os: linux
-
-      affinity: {}
-
-      tolerations: []
-
-      imagePullSecrets: []
-
-      priorityClassName: system-cluster-critical
       serviceAccountName: gatekeeper-admin
       terminationGracePeriodSeconds: 60
+      tolerations: []
 ---
 # Source: gatekeeper/templates/gatekeeper-controller-manager-deployment.yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app: "gatekeeper"
-    chart: "gatekeeper"
+    app: 'gatekeeper'
+    chart: 'gatekeeper'
     control-plane: controller-manager
     gatekeeper.sh/operation: webhook
     gatekeeper.sh/system: "yes"
-    heritage: "Tiller"
-    release: "gatekeeper"
+    heritage: 'Helm'
+    release: 'gatekeeper'
   name: gatekeeper-controller-manager
 spec:
   replicas: 3
   selector:
     matchLabels:
-      app: "gatekeeper"
-      chart: "gatekeeper"
+      app: 'gatekeeper'
+      chart: 'gatekeeper'
       control-plane: controller-manager
       gatekeeper.sh/operation: webhook
       gatekeeper.sh/system: "yes"
-      heritage: "Tiller"
-      release: "gatekeeper"
+      heritage: 'Helm'
+      release: 'gatekeeper'
   template:
     metadata:
       annotations:
         container.seccomp.security.alpha.kubernetes.io/manager: runtime/default
       labels:
-        app: "gatekeeper"
-        chart: "gatekeeper"
+        app: 'gatekeeper'
+        chart: 'gatekeeper'
         control-plane: controller-manager
         gatekeeper.sh/operation: webhook
         gatekeeper.sh/system: "yes"
-        heritage: "Tiller"
-        release: "gatekeeper"
+        heritage: 'Helm'
+        release: 'gatekeeper'
     spec:
       affinity:
         podAntiAffinity:
@@ -243,10 +261,12 @@ spec:
         - args:
             - --port=8443
             - --logtostderr
+            - --log-denies=false
             - --emit-admission-events=false
             - --log-level=INFO
-            - --exempt-namespace=gatekeeper-system
+            - --exempt-namespace=default
             - --operation=webhook
+            - --enable-mutation=false
           command:
             - /manager
           env:
@@ -259,8 +279,8 @@ spec:
               valueFrom:
                 fieldRef:
                   fieldPath: metadata.name
-          image: "openpolicyagent/gatekeeper:v3.3.0"
-          imagePullPolicy: "IfNotPresent"
+          image: 'openpolicyagent/gatekeeper:v3.4.0'
+          imagePullPolicy: 'IfNotPresent'
           livenessProbe:
             httpGet:
               path: /healthz
@@ -287,7 +307,6 @@ spec:
             requests:
               cpu: 100m
               memory: 256Mi
-
           securityContext:
             allowPrivilegeEscalation: false
             capabilities:
@@ -301,16 +320,13 @@ spec:
             - mountPath: /certs
               name: cert
               readOnly: true
+      hostNetwork: false
+      imagePullSecrets: []
       nodeSelector:
         kubernetes.io/os: linux
-
-      tolerations: []
-
-      imagePullSecrets: []
-
-      priorityClassName: system-cluster-critical
       serviceAccountName: gatekeeper-admin
       terminationGracePeriodSeconds: 60
+      tolerations: []
       volumes:
         - name: cert
           secret:
