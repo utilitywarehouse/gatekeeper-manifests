@@ -26,10 +26,12 @@ spec:
           args:
             - --port=8443
             - --logtostderr
+            - --log-denies=false
             - --emit-admission-events=false
             - --log-level=INFO
             - --exempt-namespace=$(POD_NAMESPACE)
             - --operation=webhook
+            - --enable-mutation=false
             - --disable-cert-rotation
           resources:
             limits:
