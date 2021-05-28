@@ -7,6 +7,20 @@ spec:
     spec:
       containers:
         - name: manager
+          args:
+            # Args from the upstream
+            - --audit-interval=60
+            - --log-level=INFO
+            - --constraint-violations-limit=20
+            - --audit-from-cache=false
+            - --emit-audit-events=false
+            - --operation=audit
+            - --operation=status
+            - --logtostderr
+            # Args added by us to reduce memory footprint by only requesting
+            # kinds we have constraints for and limting the chunk size.
+            - --audit-match-kind-only=true
+            - --audit-chunk-size=500
           resources:
             limits:
               cpu: 7000m
