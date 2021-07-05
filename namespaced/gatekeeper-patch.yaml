@@ -23,8 +23,8 @@ spec:
             - --audit-chunk-size=500
           resources:
             limits:
-              cpu: 7000m
-              memory: 4000Mi
+              cpu: 2500m
+              memory: 1000Mi
             requests:
               cpu: 200m
 ---
