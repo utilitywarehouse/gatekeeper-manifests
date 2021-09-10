@@ -49,7 +49,7 @@ spec:
             - --disable-cert-rotation
           resources:
             limits:
-              cpu: 7000m
+              cpu: 6000m
               memory: 4000Mi
             requests:
               cpu: 200m
