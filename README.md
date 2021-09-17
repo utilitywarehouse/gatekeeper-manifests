@@ -1,5 +1,8 @@
 # gatekeeper-manifests
 
+Archived in favour of
+[system-manifests/gatekeeper](https://github.com/utilitywarehouse/system-manifests/tree/master/gatekeeper).
+
 [![CircleCI](https://circleci.com/gh/utilitywarehouse/gatekeeper-manifests/tree/master.svg?style=svg)](https://circleci.com/gh/utilitywarehouse/gatekeeper-manifests/tree/master)
 
 This repository provides Kustomize bases to deploy Open Policy Agent gatekeeper.
